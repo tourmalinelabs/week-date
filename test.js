@@ -6,211 +6,159 @@ const expect = require('chai').expect;
 const weekDate = require('./index.js');
 
 describe('week-date', () => {
-    it('should handle date conversion', () => {
-        expect(weekDate.date({
-            year: 2015,
-            week: 1
-        }).format('YYYY-MM-DD'))
-        .to.equal('2015-01-10');
+    describe('date', () => {
+        it('should convert first week as ending on next saturday after first saturday of the year', () => {
+            expect(weekDate.date({ year: 2016, week: 1 }).format('YYYY-MM-DD'))
+            .to.equal('2016-01-09');
+        });
 
-        expect(weekDate.date({
-            year: 2015,
-            week: 2
-        }).format('YYYY-MM-DD'))
-        .to.equal('2015-01-17');
+        it('should convert second week the next saturday', () => {
+            expect(weekDate.date({ year: 2016, week: 2 }).format('YYYY-MM-DD'))
+            .to.equal('2016-01-16');
+        });
 
-        expect(weekDate.date({
-            year: 2015,
-            week: 51
-        }).format('YYYY-MM-DD'))
-        .to.equal('2015-12-26');
+        it('should cover the overlap into next year', () => {
+            expect(weekDate.date({ year: 2016, week: 53 }).format('YYYY-MM-DD'))
+            .to.equal('2017-01-07');
+        });
 
-        expect(weekDate.date({
-            year: 2015,
-            week: 52
-        }).format('YYYY-MM-DD'))
-        .to.equal('2016-01-02');
+        it('should cover partial overlap into next year', () => {
+            expect(weekDate.date({ year: 2015, week: 52 }).format('YYYY-MM-DD'))
+            .to.equal('2016-01-02');
+        });
+
+        it('should handle first week of 2006', () => {
+            expect(weekDate.date({ year: 2006, week: 1 }).format('YYYY-MM-DD'))
+            .to.equal('2006-01-14');
+        });
+
+        it('should handle second to last week of 2005', () => {
+            expect(weekDate.date({ year: 2005, week: 53 }).format('YYYY-MM-DD'))
+            .to.equal('2006-01-07');
+        });
     });
 
-    it('should handle week conversion', () => {
-        expect(weekDate.week(moment.utc('2015-01-10')))
-        .to.deep.equal({ year: 2015, week: 1 });
+    describe('week', () => {
+        it('should convert first week as ending on next saturday after first saturday of the year', () => {
+            expect(weekDate.week(moment.utc('2016-01-09')))
+            .to.deep.equal({ year: 2016, week: 1 });
+        });
 
-        expect(weekDate.week(moment.utc('2015-01-17')))
-        .to.deep.equal({ year: 2015, week: 2 });
+        it('should convert friday of first week of year', () => {
+            expect(weekDate.week(moment.utc('2016-01-08')))
+            .to.deep.equal({ year: 2016, week: 1 });
+        });
 
-        expect(weekDate.week(moment.utc('2015-12-26')))
-        .to.deep.equal({ year: 2015, week: 51 });
+        it('should convert sunday of first week of year', () => {
+            expect(weekDate.week(moment.utc('2016-01-03')))
+            .to.deep.equal({ year: 2016, week: 1 });
+        });
 
-        expect(weekDate.week(moment.utc('2016-01-02')))
-        .to.deep.equal({ year: 2015, week: 52 });
+
+
+        it('should convert second week the next saturday', () => {
+            expect(weekDate.week(moment.utc('2016-01-16')))
+            .to.deep.equal({ year: 2016, week: 2 });
+        });
+
+        it('should convert friday of second week the next saturday', () => {
+            expect(weekDate.week(moment.utc('2016-01-15')))
+            .to.deep.equal({ year: 2016, week: 2 });
+        });
+
+        it('should convert sunday of second week the next saturday', () => {
+            expect(weekDate.week(moment.utc('2016-01-10')))
+            .to.deep.equal({ year: 2016, week: 2 });
+        });
+
+
+
+        it('should cover the overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2017-01-07')))
+            .to.deep.equal({ year: 2016, week: 53 });
+        });
+
+        it('should cover friday of the overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2017-01-06')))
+            .to.deep.equal({ year: 2016, week: 53 });
+        });
+
+        it('should cover sunday of the overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2017-01-01')))
+            .to.deep.equal({ year: 2016, week: 53 });
+        });
+
+
+
+        it('should cover partial overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2016-01-02')))
+            .to.deep.equal({ year: 2015, week: 52 });
+        });
+
+        it('should cover friday of the partial overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2016-01-01')))
+            .to.deep.equal({ year: 2015, week: 52 });
+        });
+
+        it('should cover sunday of the partial overlap into next year', () => {
+            expect(weekDate.week(moment.utc('2015-12-27')))
+            .to.deep.equal({ year: 2015, week: 52 });
+        });
+
+
+        it('should handle first week of 2006', () => {
+            expect(weekDate.week(moment.utc('2006-01-07')))
+            .to.deep.equal({ year: 2005, week: 53 });
+        });
+
+        it('should handle second to last week of 2005', () => {
+            expect(weekDate.week(moment.utc('2005-12-31')))
+            .to.deep.equal({ year: 2005, week: 52 });
+        });
+
+
+        it('should cover overlap into 2018', () => {
+            expect(weekDate.week(moment.utc('2018-01-06')))
+            .to.deep.equal({ year: 2017, week: 52 });
+        });
+
+        it('should cover friday of the overlap into 2018', () => {
+            expect(weekDate.week(moment.utc('2018-01-05')))
+            .to.deep.equal({ year: 2017, week: 52 });
+        });
+
+        it('should cover sunday of the overlap into 2018', () => {
+            expect(weekDate.week(moment.utc('2017-12-31')))
+            .to.deep.equal({ year: 2017, week: 52 });
+        });
+
+
+
+        it('should cover first week of 2018', () => {
+            expect(weekDate.week(moment.utc('2018-01-13')))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
+
+        it('should cover friday of the first week of 2018', () => {
+            expect(weekDate.week(moment.utc('2018-01-12')))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
+
+        it('should cover sunday of the first week of 2018', () => {
+            expect(weekDate.week(moment.utc('2018-01-07')))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
     });
 
-
-    // it('should handle week rollover 2015 - 2016', () => {
-    //     expect(weekDate.date({
-    //         year: 2015,
-    //         week: 51
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2015-12-19');
-
-    //     expect(weekDate.date({
-    //         year: 2015,
-    //         week: 52
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2015-12-26');
-
-    //     expect(weekDate.date({
-    //         year: 2016,
-    //         week: 1
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2016-01-02');
-
-    //     expect(weekDate.week(moment.utc('2015-12-19')))
-    //     .to.deep.equal({ year: 2015, week: 51 });
-
-    //     expect(weekDate.week(moment.utc('2015-12-20')))
-    //     .to.deep.equal({ year: 2015, week: 52 });
-
-    //     expect(weekDate.week(moment.utc('2015-12-25')))
-    //     .to.deep.equal({ year: 2015, week: 52 });
-
-    //     expect(weekDate.week(moment.utc('2015-12-26')))
-    //     .to.deep.equal({ year: 2015, week: 52 });
-
-    //     expect(weekDate.week(moment.utc('2015-12-27')))
-    //     .to.deep.equal({ year: 2016, week: 1 });
-
-    //     expect(weekDate.week(moment.utc('2016-01-02')))
-    //     .to.deep.equal({ year: 2016, week: 1 });
-
-    //     expect(weekDate.week(moment.utc('2016-01-03')))
-    //     .to.deep.equal({ year: 2016, week: 2 });
-
-    //     expect(weekDate.week(moment.utc('2016-01-04')))
-    //     .to.deep.equal({ year: 2016, week: 2 });
-    // });
-
-    it('should handle current week (when this test was written)', () => {
-        expect(weekDate.date({
-            year: 2017,
-            week: 1
-        }).format('YYYY-MM-DD'))
-        .to.equal('2017-01-07');
-
-        expect(weekDate.date({
-            year: 2017,
-            week: 2
-        }).format('YYYY-MM-DD'))
-        .to.equal('2017-01-14');
-
-        expect(weekDate.week(moment.utc('2017-01-4')))
-        .to.deep.equal({ year: 2017, week: 1 });
-
-        expect(weekDate.week(moment.utc('2017-01-7')))
-        .to.deep.equal({ year: 2017, week: 1 });
-
-        expect(weekDate.week(moment.utc('2017-01-8')))
-        .to.deep.equal({ year: 2017, week: 2 });
-
-        expect(weekDate.week(moment.utc('2017-01-14')))
-        .to.deep.equal({ year: 2017, week: 2 });
-
-        expect(weekDate.week(moment.utc('2017-01-20')))
-        .to.deep.equal({ year: 2017, week: 3 });
-
-        expect(weekDate.week(moment.utc('2017-01-21')))
-        .to.deep.equal({ year: 2017, week: 3 });
-    });
-
-    it('should handle upcoming year rollover (2017)', () => {
-        expect(weekDate.date({
-            year: 2017,
-            week: 52
-        }).format('YYYY-MM-DD'))
-        .to.equal('2017-12-30');
-
-        expect(weekDate.date({
-            year: 2017,
-            week: 53
-        }).format('YYYY-MM-DD'))
-        .to.equal('2018-01-06');
-
-        expect(weekDate.week(moment.utc('2017-12-29')))
-        .to.deep.equal({ year: 2017, week: 52 });
-
-        expect(weekDate.week(moment.utc('2017-12-30')))
-        .to.deep.equal({ year: 2017, week: 52 });
-
-        expect(weekDate.week(moment.utc('2017-12-31')))
-        .to.deep.equal({ year: 2017, week: 53 });
-
-        expect(weekDate.week(moment.utc('2018-01-6')))
-        .to.deep.equal({ year: 2017, week: 53 });
-
-        expect(weekDate.week(moment.utc('2018-01-7')))
-        .to.deep.equal({ year: 2018, week: 1 });
-
-        // expect(weekDate.week(moment.utc('2017-12-30')))
-        // .to.deep.equal({ year: 2017, week: 52 });
-
-        // expect(weekDate.week(moment.utc('2017-12-31')))
-        // .to.deep.equal({ year: 2018, week: 1 });
-    });
-
-    // it('should handle 2016', () => {
-    //     expect(weekDate.date({
-    //         year: 2016,
-    //         week: 53
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2016-12-31');
-
-    //     expect(weekDate.date({
-    //         year: 2016,
-    //         week: 53
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2016-12-31');
-
-    //     expect(weekDate.date({
-    //         year: 2017,
-    //         week: 1
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2017-01-07');
-    // });
-
-    // it('should handle last week of 2017', () => {
-    //     expect(weekDate.date({
-    //         year: 2017,
-    //         week: 52
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2017-12-30');
-    // });
-
-    // it('should handle week rollover of 2017', () => {
-    //     expect(weekDate.date({
-    //         year: 2017,
-    //         week: 53
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2018-01-06');
-
-    //     expect(weekDate.date({
-    //         year: 2018,
-    //         week: 1
-    //     }).format('YYYY-MM-DD'))
-    //     .to.equal('2018-01-06');
-    // });
-
-    it('should consistently generate each week ending on saturday over time and convert back and forth', () => {
-        _.each(_.range(2000, 2100), year => {
-            _.each(_.range(1, 52), week => {
-                const d = weekDate.date({ year: year, week: week });
-
-                expect(d.year()).to.equal(year);
-                expect(d.week()).to.equal(week);
-                expect(d.day()).to.equal(6);
-
-                expect(weekDate.week(d))
-                .to.deep.equal({ year: year, week: week });
+    describe('potpourri', () => {
+        it('should probably be bijective', () => {
+            _.each(_.range(2000, 2100), year => {
+                _.each(_.range(1, 53), week => {
+                    expect(
+                        weekDate.week(weekDate.date({ year: year, week: week }))
+                    )
+                    .to.deep.equal({ year: year, week: week });
+                });
             });
         });
     });
