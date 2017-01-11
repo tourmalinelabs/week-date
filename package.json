@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/DubFriend/week-date.git"
+    "url": "git+ssh://git@github.com/tourmalinelabs/week-date.git"
   },
   "author": "Brian Detering",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DubFriend/week-date/issues"
+    "url": "https://github.com/tourmalinelabs/week-date/issues"
   },
-  "homepage": "https://github.com/DubFriend/week-date#readme",
+  "homepage": "https://github.com/tourmalinelabs/week-date#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
