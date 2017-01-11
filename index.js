@@ -19,10 +19,18 @@ const firstSaturdayOfYear = year => {
 
 const numberOfDaysInYear = year => year % 4 === 0 ? 366 : 365;
 
-
 exports.date = fig => {
-    const year = fig.year;
-    const week = fig.week;
+    let year;
+    let week;
+    if(typeof fig === 'string') {
+        const match = fig.match(/^([0-9]{4})-([0-9]{2})$/);
+        week = parseInt(match[2], 10);
+        year = parseInt(match[1], 10);
+    }
+    else {
+        year = fig.year;
+        week = fig.week;
+    }
 
     let dayOfYearAdjusted = ((week - 1) * 7 + firstSaturdayOfYear(year));
     if(firstSaturdayOfYear(year) <= 7) {
@@ -35,7 +43,9 @@ exports.date = fig => {
     return date;
 };
 
-exports.week = date => {
+exports.week = dateRaw => {
+    const date = moment.utc(dateRaw);
+
     const yearAdjusted = date.dayOfYear() <= firstSaturdayOfYear(date.year()) ?
         date.year() - 1 : date.year();
 
@@ -47,3 +57,5 @@ exports.week = date => {
 
     return { year: yearAdjusted, week: week };
 };
+
+exports.adjustDate = date => exports.date(exports.week(date));

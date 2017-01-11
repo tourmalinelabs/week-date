@@ -36,6 +36,11 @@ describe('week-date', () => {
             expect(weekDate.date({ year: 2005, week: 53 }).format('YYYY-MM-DD'))
             .to.equal('2006-01-07');
         });
+
+        it('should allow for year-week string', () => {
+            expect(weekDate.date('2005-53').format('YYYY-MM-DD'))
+            .to.equal('2006-01-07');
+        });
     });
 
     describe('week', () => {
@@ -147,6 +152,29 @@ describe('week-date', () => {
         it('should cover sunday of the first week of 2018', () => {
             expect(weekDate.week(moment.utc('2018-01-07')))
             .to.deep.equal({ year: 2018, week: 1 });
+        });
+
+
+        it('should allow for regular date objects', () => {
+            expect(weekDate.week(moment.utc('2018-01-07').toDate()))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
+
+        it('should allow for milliseconds since epoch', () => {
+            expect(weekDate.week(moment.utc('2018-01-07').unix() * 1000))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
+
+        it('should allow for date string', () => {
+            expect(weekDate.week('2018-01-07'))
+            .to.deep.equal({ year: 2018, week: 1 });
+        });
+    });
+
+    describe('adjustDate', () => {
+        it('should adjust date to that weeks saturday', () => {
+            expect(weekDate.adjustDate(moment.utc('2018-01-07')).format('YYYY-MM-DD'))
+            .to.deep.equal('2018-01-13');
         });
     });
 
