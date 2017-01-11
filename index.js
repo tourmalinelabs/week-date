@@ -3,7 +3,6 @@
 const moment = require('moment');
 
 const SATURDAY = 6;
-const SUNDAY = 0;
 
 const firstSaturdayOfYear = year => {
     let time = moment.utc(0);
