@@ -1,0 +1,29 @@
+{
+  "name": "week-date",
+  "version": "0.0.0",
+  "description": "Convert between dates and week of year",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DubFriend/week-date.git"
+  },
+  "author": "Brian Detering",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DubFriend/week-date/issues"
+  },
+  "homepage": "https://github.com/DubFriend/week-date#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^3.0.1"
+  },
+  "dependencies": {
+    "moment": "^2.17.1",
+    "lodash": "^4.17.4",
+    "q": "^1.4.1"
+  }
+}
