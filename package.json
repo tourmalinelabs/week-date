@@ -4,7 +4,7 @@
   "description": "Convert between dates and week of year",
   "main": "./build/index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
