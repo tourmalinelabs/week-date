@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var moment = require('moment');
-var SATURDAY = 6;
+const moment = require('moment');
+const SATURDAY = 6;
 var firstSaturdayOfYear = function firstSaturdayOfYear(year) {
     var time = moment.utc(0);
     time.year(year);
