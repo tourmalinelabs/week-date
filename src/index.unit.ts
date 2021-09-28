@@ -1,12 +1,8 @@
-export {};
-
 const _ = require('lodash');
-
 const moment = require('moment');
-
-const expect = require('chai').expect;
-
-const weekDate = require('./index.js');
+//const expect = require('chai').expect;
+const weekDate = require('./index');
+import { expect } from 'chai';
 
 describe('week-date', () => {
   describe('date', () => {
