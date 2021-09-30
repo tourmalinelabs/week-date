@@ -1,4 +1,4 @@
-const moment = require("moment");
+import moment from "moment";
 const SATURDAY = 6;
 
 var firstSaturdayOfYear = function firstSaturdayOfYear(year: number) {
