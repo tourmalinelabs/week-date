@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const moment = require("moment");
+const moment_1 = __importDefault(require("moment"));
 const SATURDAY = 6;
 var firstSaturdayOfYear = function firstSaturdayOfYear(year) {
-    var time = moment.utc(0);
+    var time = moment_1.default.utc(0);
     time.year(year);
     time.dayOfYear(1);
     while (time.day() < SATURDAY) {
@@ -31,13 +34,13 @@ const weekDate = {
         if (firstSaturdayOfYear(year) <= 7) {
             dayOfYearAdjusted += 7;
         }
-        var date = moment.utc(0);
+        var date = moment_1.default.utc(0);
         date.year(year);
         date.dayOfYear(dayOfYearAdjusted);
         return date;
     },
     week: (dateRaw) => {
-        var date = moment.utc(dateRaw);
+        var date = moment_1.default.utc(dateRaw);
         var yearAdjusted = date.dayOfYear() <= firstSaturdayOfYear(date.year()) ? date.year() - 1 : date.year();
         var dayOfYearAdjusted = (yearAdjusted < date.year() ? numberOfDaysInYear(yearAdjusted) + date.dayOfYear() : date.dayOfYear()) -
             firstSaturdayOfYear(yearAdjusted);
